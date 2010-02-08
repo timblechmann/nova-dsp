@@ -1,4 +1,5 @@
 set(tests
+    filter.cpp
     map1d_test.cpp
     sample_extractor_tests.cpp
 )

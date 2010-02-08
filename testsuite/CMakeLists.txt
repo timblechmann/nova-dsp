@@ -1,4 +1,5 @@
 set(tests
+    map1d_test.cpp
     sample_extractor_tests.cpp
 )
 

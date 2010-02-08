@@ -1,5 +1,6 @@
 set(tests
     filter.cpp
+    interpolation.cpp
     map1d_test.cpp
     oscillator_tests.cpp
     parameter.cpp

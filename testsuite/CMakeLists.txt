@@ -2,6 +2,7 @@ set(tests
     filter.cpp
     map1d_test.cpp
     oscillator_tests.cpp
+    parameter.cpp
     sample_extractor_tests.cpp
 )
 

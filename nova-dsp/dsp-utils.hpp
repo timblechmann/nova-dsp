@@ -21,8 +21,24 @@
 
 #include <algorithm>
 
+#include "branch_hints.hpp"
+
 namespace nova
 {
+
+template <typename I>
+inline I wrap_optimistic(I val, const I mod)
+{
+    if (unlikely(val >= mod))
+        do
+            val -= mod;
+        while (unlikely(val >= mod));
+    else
+        while (unlikely(val < I(0)))
+            val += mod;
+
+    return val;
+}
 
 template <typename T>
 inline T clip(T t, T low, T hi)

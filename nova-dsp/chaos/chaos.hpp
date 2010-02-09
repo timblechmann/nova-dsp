@@ -57,6 +57,12 @@ template <typename internal_type,
 class chaos_generator_base
 {
 protected:
+    template <typename F>
+    static inline F pow2(F f)
+    {
+        return f*f;
+    }
+
     static const unsigned int dimension = dimension_arg;
     static const unsigned int parameters = parameter_arg;
     static const unsigned int output_dimension = output_dimension_arg;

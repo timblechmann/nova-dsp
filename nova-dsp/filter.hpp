@@ -353,7 +353,7 @@ protected:
     {
         if (checked)
         {
-            if (likely(isnormal(arg)))
+            if (likely(std::isnormal(arg)))
                 return arg;
             else
                 return 0;

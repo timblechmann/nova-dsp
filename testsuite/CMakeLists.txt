@@ -2,6 +2,7 @@ set(tests
     filter.cpp
     interpolation.cpp
     map1d_test.cpp
+    mitra_regalia_filters.cpp
     oscillator_tests.cpp
     parameter.cpp
     sample_extractor_tests.cpp

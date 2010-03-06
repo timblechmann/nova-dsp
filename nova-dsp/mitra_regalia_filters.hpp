@@ -199,6 +199,13 @@ public:
     template <typename input_buffer_type, typename output_buffer_type>
     inline void perform(input_buffer_type const & in, output_buffer_type & out, uint n)
     {
+        muladd_helper_nop<sample_type> ma;
+        perform(in, out, n, ma);
+    }
+
+    template <typename input_buffer_type, typename output_buffer_type, typename muladd_helper>
+    inline void perform(input_buffer_type const & in, output_buffer_type & out, uint n, muladd_helper & ma)
+    {
         const sample_type * in_sample = get_samples(in);
         sample_type * out_sample = get_samples(out);
 
@@ -207,7 +214,7 @@ public:
         filter_parameter_type a (a_);
 
         for (uint i = 0; i != n; ++i)
-            out_sample[i] = compute_sample(in_sample[i], z, a);
+            out_sample[i] = ma(compute_sample(in_sample[i], z, a));
 
         z_ = z;
         a_.update(a);
@@ -286,6 +293,13 @@ public:
     template <typename input_buffer_type, typename output_buffer_type>
     inline void perform(input_buffer_type const & in, output_buffer_type & out, uint n)
     {
+        muladd_helper_nop<sample_type> ma;
+        perform(in, out, n, ma);
+    }
+
+    template <typename input_buffer_type, typename output_buffer_type, typename muladd_helper>
+    inline void perform(input_buffer_type const & in, output_buffer_type & out, uint n, muladd_helper & ma)
+    {
         const sample_type * in_sample = get_samples(in);
         sample_type * out_sample = get_samples(out);
 
@@ -294,7 +308,7 @@ public:
         filter_parameter_type b (b_);
 
         for (uint i = 0; i != n; ++i)
-            out_sample[i] = compute_sample(in_sample[i], z, a, b);
+            out_sample[i] = ma(compute_sample(in_sample[i], z, a, b));
 
         z_ = z;
         a_.update(a);
@@ -474,6 +488,13 @@ public:
     template <typename input_buffer_type, typename output_buffer_type>
     inline void perform(input_buffer_type const & in, output_buffer_type & out, uint n)
     {
+        detail::muladd_helper_nop<sample_type> ma;
+        perform(in, out, n, ma);
+    }
+
+    template <typename input_buffer_type, typename output_buffer_type, typename muladd_helper>
+    inline void perform(input_buffer_type const & in, output_buffer_type & out, uint n, muladd_helper & ma)
+    {
         const sample_type * in_sample = get_samples(in);
         sample_type * out_sample = get_samples(out);
 
@@ -485,7 +506,7 @@ public:
 
         assert(n);
         do
-            *out_sample++ = compute_sample(*in_sample++, z, a, b, k);
+            *out_sample++ = ma(compute_sample(*in_sample++, z, a, b, k));
         while(--n);
 
         z_ = z;

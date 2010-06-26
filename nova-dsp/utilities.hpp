@@ -25,6 +25,8 @@
 #include <cassert>
 #include <cmath>
 
+#include "branch_hints.hpp"
+
 namespace nova
 {
 
@@ -59,6 +61,66 @@ inline T phasor_increment(T frequency, T samplerate)
 }
 
 } /* namespace detail */
+
+/** \brief amplitude to db conversion */
+template <typename T>
+inline T amp2db(T amp)
+{
+    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    if (unlikely(amp <= 0.f))
+        return -120;
+    else
+        return log10(amp) * T(10);
+}
+
+/** \brief db to amplitude conversion */
+template <typename T>
+inline T db2amp(T db)
+{
+    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    return pow(T(10), db * T(0.1));
+}
+
+template <typename T>
+inline T rms2db(T amp)
+{
+    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    if (unlikely(amp <= 0.f))
+        return -120;
+    else
+        return log10(amp) * T(20);
+}
+
+template <typename T>
+inline T db2rms(T db)
+{
+    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    return pow(T(10), db * T(0.05));
+}
+
+/** \brief midi to frequency conversion */
+template <typename T>
+inline T midi2frequency(T midi)
+{
+    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    const T expfactor = 0.0577622650467; // log(2**(1/12.))
+    const T basefactor = 8.17579891564;  // 2 ** (-57/12.) * 440 / 2
+
+    return basefactor * exp(expfactor * midi);
+}
+
+/** \brief frequency to midi conversion */
+template <typename T>
+inline T frequency2midi(T freq)
+{
+    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    const T OneDiv440 = 1./440;
+    if (unlikely(freq == 0.f))
+        return T(-1500);
+    else
+        return T(12) * log2(freq * OneDiv440) + T(57);
+}
+
 } /* namespace nova */
 
 #endif /* _UTILITIES_HPP */

@@ -69,6 +69,11 @@ struct cheap_noise_engine
     result_type min(void) {return std::numeric_limits<result_type>::min();}
     result_type max(void) {return std::numeric_limits<result_type>::max();}
 
+    result_type state(void) const
+    {
+        return val;
+    }
+
 private:
     result_type val;
 };

@@ -22,6 +22,8 @@
 
 #include "helpers.hpp"
 
+#include "sample_extractor.hpp"
+
 namespace nova
 {
 namespace detail
@@ -319,7 +321,7 @@ struct muladd_helper_mul_v_add_v
 {
     /* offsets and factors should not point to the same memory region */
     muladd_helper_mul_v_add_v(input_buffer_type const & factors, input_buffer_type const & offsets):
-        factors( get_samples(factors) ), offsets( get_samples(offsets) )
+        factors( nova::get_samples(factors) ), offsets( nova::get_samples(offsets) )
     {}
 
     template <typename arg_sample_type>

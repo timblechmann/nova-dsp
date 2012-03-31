@@ -171,7 +171,7 @@ class latoomutalpha:
         const internal_type c = state.get_parameter(2);
 
         using std::sin;
-        const internal_type new_x1 = sin(x2 * b) + pow2( sin(x1*b) ) + pow3 (sin(x1 * b));
+        const internal_type new_x1 = sin(x2 * b) + generator_base::pow2( sin(x1*b) ) + pow3 (sin(x1 * b));
         const internal_type new_x2 = sin(x1 * a) + pow2( sin(x2*a) ) + pow3 (sin(x2 * c));
 
         state.set(0, new_x1);
@@ -212,8 +212,8 @@ class latoomutbeta:
         const internal_type b = state.get_parameter(1);
 
         using std::sin;
-        internal_type new_x1 = sin(x2 * b) + pow2( sin(x1*b) );
-        internal_type new_x2 = sin(x1 * a) + pow2( sin(x2*a) );
+        internal_type new_x1 = sin(x2 * b) + generator_base::pow2( sin(x1*b) );
+        internal_type new_x2 = sin(x1 * a) + generator_base::pow2( sin(x2*a) );
 
         if (unlikely(new_x1 == 0 and new_x2 == 0))
         {
@@ -259,8 +259,8 @@ class latoomutgamma:
         const internal_type b = state.get_parameter(1);
 
         using namespace std;
-        internal_type new_x1 = abs(sin(x2 * b)) + pow2( sin(x1*b) );
-        internal_type new_x2 = abs(sin(x1 * a)) + pow2( sin(x2*a) );
+        internal_type new_x1 = abs(sin(x2 * b)) + generator_base::pow2( sin(x1*b) );
+        internal_type new_x2 = abs(sin(x1 * a)) + generator_base::pow2( sin(x2*a) );
 
         if (unlikely(new_x1 == 0 and new_x2 == 0))
         {
@@ -496,7 +496,7 @@ class lozi_elhadj_map:
         const internal_type beta = state.get_parameter(1);
 
         using namespace std;
-        internal_type new_x1 = 1 - alpha * (abs(x1) - pow2(x2)) + x2;
+        internal_type new_x1 = 1 - alpha * (abs(x1) - generator_base::pow2(x2)) + x2;
         internal_type new_x2 = beta * x1;
 
         state.set(0, new_x1);
@@ -572,7 +572,7 @@ class henon_map:
         const internal_type alpha = state.get_parameter(0);
         const internal_type beta = state.get_parameter(1);
 
-        internal_type new_x1 = 1 - alpha * pow2(x1) + x2;
+        internal_type new_x1 = 1 - alpha * generator_base::pow2(x1) + x2;
         internal_type new_x2 = beta * x1;
 
         state.set(0, new_x1);

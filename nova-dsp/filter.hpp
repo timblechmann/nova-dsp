@@ -521,8 +521,8 @@ public:
 
         const internal_type stabilized_band = band - (band*band*band) * internal_type(0.001); /* stabilize filter */
 
-        band_old = check(stabilized_band);
-        low_old = check(low);
+        band_old = detail::filter_base<internal_type, checked>::check(stabilized_band);
+        low_old = detail::filter_base<internal_type, checked>::check(low);
 
         sample_block ret;
         ret[0] = low;

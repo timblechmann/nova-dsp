@@ -82,7 +82,7 @@ protected:
     template <typename generator, typename output_buffer_type, typename sample_count_t, typename muladd_helper>
     inline void perform(generator & gen, output_buffer_type & out, sample_count_t n, muladd_helper & ma)
     {
-        sample_type * out_sample = get_samples(out);
+        sample_type * out_sample = nova::get_samples(out);
 
         assert(n);
 

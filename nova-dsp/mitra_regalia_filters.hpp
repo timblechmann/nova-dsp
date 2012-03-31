@@ -152,7 +152,7 @@ protected:
         internal_type new_z = in - z*a;
         internal_type ret = z + new_z*a;
 
-        z = check(new_z);
+        z = detail::filter_base<internal_type, checked>::check(new_z);
         if (low)
             return -ret;
         else
@@ -248,7 +248,7 @@ protected:
         internal_type new_z = in - z*a;
         internal_type ret = z + new_z*a;
 
-        z = check(new_z);
+        z = detail::filter_base<internal_type, checked>::check(new_z);
         return -ret;
     }
 
@@ -325,8 +325,8 @@ protected:
         internal_type back1 = z[0] + b * step2;
         internal_type back2 = z[1] + a * step1;
 
-        z[0] = check(step2);
-        z[1] = check(back1);
+        z[0] = detail::filter_base<internal_type, checked>::check(step2);
+        z[1] = detail::filter_base<internal_type, checked>::check(back1);
 
         return back2;
     }
@@ -526,8 +526,8 @@ protected:
         internal_type back1 = z[0] + b * step2;
         internal_type back2 = z[1] + a * step1;
 
-        z[0] = check(step2);
-        z[1] = check(back1);
+        z[0] = detail::filter_base<internal_type, checked>::check(step2);
+        z[1] = detail::filter_base<internal_type, checked>::check(back1);
 
         return back2;
     }
@@ -542,7 +542,7 @@ protected:
 
     static inline internal_type compute_a(internal_type omega)
     {
-        internal_type tan_omega_2 = std::tan(omega * 0.5);
+        internal_type tan_omega_2 = std::tan(omega * (internal_type)0.5);
 
         return (1 - tan_omega_2) / (1 + tan_omega_2);
     }

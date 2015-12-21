@@ -22,11 +22,11 @@
 
 #include <cassert>
 #include <boost/array.hpp>
+#include <boost/config.hpp>
+#include <boost/math/constants/constants.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
-#include <boost/math/constants/constants.hpp>
-#include "../branch_hints.hpp"
-#include "../force_inline.hpp"
+
 
 #include "../sample_extractor.hpp"
 #include "../noise_utils.hpp"
@@ -304,12 +304,12 @@ class nop_interpolator
     typedef std::size_t size_t;
 
 public:
-    static always_inline void perform(system_state_type & state, output_array & out, unsigned int n)
+    static BOOST_FORCEINLINE void perform(system_state_type & state, output_array & out, unsigned int n)
     {
         perform(state, out.begin(), n);
     }
 
-    static always_inline void perform(system_state_type & state, sample_type * const * out, unsigned int n)
+    static BOOST_FORCEINLINE void perform(system_state_type & state, sample_type * const * out, unsigned int n)
     {
         for (size_t sample = 0; sample != n; ++sample)
         {
@@ -321,7 +321,7 @@ public:
     }
 
     /* small api wrapper for one-dimensional systems */
-    static always_inline void perform(system_state_type & state, sample_type * out, unsigned int n)
+    static BOOST_FORCEINLINE void perform(system_state_type & state, sample_type * out, unsigned int n)
     {
         BOOST_STATIC_ASSERT(dimension == 1);
 
@@ -361,12 +361,12 @@ public:
         current_.assign(0);
     }
 
-    always_inline void perform(system_state_type & state, output_array const & out, unsigned int n)
+    BOOST_FORCEINLINE void perform(system_state_type & state, output_array const & out, unsigned int n)
     {
         perform (state, out.begin(), n);
     }
 
-    always_inline void perform(system_state_type & state, sample_type * const * out, unsigned int n)
+    BOOST_FORCEINLINE void perform(system_state_type & state, sample_type * const * out, unsigned int n)
     {
         register sample_array current = current_;
         register phase_count_type remaining = remaining_;
@@ -381,7 +381,7 @@ public:
                     (*compute_sample)(state);
                     remaining += interpolation_steps;
                 }
-                while(unlikely(remaining <= 0));
+                while(BOOST_UNLIKELY(remaining <= 0));
 
                 for (unsigned int i = 0; i != dimension; ++i)
                     current[i] = state.get(i);
@@ -452,12 +452,12 @@ public:
         slope_.assign(0);
     }
 
-    always_inline void perform(system_state_type & state, output_array const & out, unsigned int n)
+    BOOST_FORCEINLINE void perform(system_state_type & state, output_array const & out, unsigned int n)
     {
         perform (state, out.begin(), n);
     }
 
-    always_inline void perform(system_state_type & state, sample_type * const* out, unsigned int n)
+    BOOST_FORCEINLINE void perform(system_state_type & state, sample_type * const* out, unsigned int n)
     {
         register sample_array current = sh_base::current_;
         register phase_count_type remaining = sh_base::remaining_;
@@ -476,7 +476,7 @@ public:
                     (*compute_sample)(state);
                     remaining += sh_base::interpolation_steps;
                 }
-                while(unlikely(remaining <= 0));
+                while(BOOST_UNLIKELY(remaining <= 0));
 
                 for (size_t channel = 0; channel != dimension; ++channel)
                 {
@@ -548,12 +548,12 @@ public:
         curve_.assign(0);
     }
 
-    always_inline void perform(system_state_type & state, output_array const & out, unsigned int n)
+    BOOST_FORCEINLINE void perform(system_state_type & state, output_array const & out, unsigned int n)
     {
         perform (state, out.begin(), n);
     }
 
-    always_inline void perform(system_state_type & state, sample_type * const * out, unsigned int n)
+    BOOST_FORCEINLINE void perform(system_state_type & state, sample_type * const * out, unsigned int n)
     {
         register sample_array current = sh_base::current_;
         register phase_count_type remaining = sh_base::remaining_;
@@ -572,7 +572,7 @@ public:
                     (*compute_sample)(state);
                     remaining += sh_base::interpolation_steps;
                 }
-                while(unlikely(remaining <= 0));
+                while(BOOST_UNLIKELY(remaining <= 0));
 
                 const sample_type steps = sample_type(sh_base::interpolation_steps);
                 for (size_t channel = 0; channel != dimension; ++channel)
@@ -613,7 +613,7 @@ public:
     }
 
     /* small api wrapper for one-dimensional systems, the compiler should be able to optimize this */
-    always_inline void perform(system_state_type & state, sample_type * out, unsigned int n)
+    BOOST_FORCEINLINE void perform(system_state_type & state, sample_type * out, unsigned int n)
     {
         BOOST_STATIC_ASSERT(dimension == 1);
 
@@ -687,13 +687,13 @@ public:                                                                 \
     /* @{ */                                                            \
     /** generate at sampling rate */                                    \
     template <typename output_buffer_type>                              \
-    always_inline void perform(output_buffer_type & out, unsigned int n) \
+    BOOST_FORCEINLINE void perform(output_buffer_type & out, unsigned int n) \
     {                                                                   \
         assert(output_dimension == 1);                                  \
         perform(get_samples(out), n);                                   \
     }                                                                   \
                                                                         \
-    always_inline void perform(sample_type * out_sample, unsigned int n) \
+    BOOST_FORCEINLINE void perform(sample_type * out_sample, unsigned int n) \
     {                                                                   \
         BOOST_STATIC_ASSERT(output_dimension == 1);                     \
         register state_copy local (*this); /* copy state to registers */ \
@@ -703,7 +703,7 @@ public:                                                                 \
         interpolator::perform(local, out_sample, n);                    \
     }                                                                   \
                                                                         \
-    always_inline void perform(sample_type ** out_sample, unsigned int n) \
+    BOOST_FORCEINLINE void perform(sample_type ** out_sample, unsigned int n) \
     {                                                                   \
         register state_copy local (*this); /* copy state to registers */ \
                                                                         \
@@ -717,14 +717,14 @@ public:                                                                 \
     /* @{ */                                                            \
     /** generate via interpolator */                                    \
     template <typename interpolator_type, typename output_buffer_type>  \
-    always_inline void perform(interpolator_type & interpolator, output_buffer_type & out, unsigned int n) \
+    BOOST_FORCEINLINE void perform(interpolator_type & interpolator, output_buffer_type & out, unsigned int n) \
     {                                                                   \
         assert(output_dimension == 1);                                  \
         perform(get_samples(out), n);                                   \
     }                                                                   \
                                                                         \
     template <typename interpolator_type>                               \
-    always_inline void perform(interpolator_type & interpolator, sample_type * out_sample, unsigned int n) \
+    BOOST_FORCEINLINE void perform(interpolator_type & interpolator, sample_type * out_sample, unsigned int n) \
     {                                                                   \
         /* BOOST_STATIC_ASSERT(output_dimension == 1); */               \
         assert(output_dimension == 1);                                  \
@@ -734,7 +734,7 @@ public:                                                                 \
     }                                                                   \
                                                                         \
     template <typename interpolator_type>                               \
-    always_inline void perform(interpolator_type & interpolator, sample_type ** out_sample, unsigned int n) \
+    BOOST_FORCEINLINE void perform(interpolator_type & interpolator, sample_type ** out_sample, unsigned int n) \
     {                                                                   \
         register state_copy local (*this); /* copy state to registers */ \
                                                                         \

@@ -19,8 +19,7 @@
 #ifndef NOVA_DSP_PHASOR_HPP
 #define NOVA_DSP_PHASOR_HPP
 
-#include <boost/static_assert.hpp>
-#include <boost/type_traits.hpp>
+#include <type_traits>
 #include "branch_hints.hpp"
 #include "dsp-utils.hpp"
 
@@ -94,8 +93,8 @@ template <typename sample_type = float,
           uint wrap_arg = 1>
 class phasor
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<sample_type>::value);
-    BOOST_STATIC_ASSERT(boost::is_floating_point<internal_type>::value);
+    static_assert( std::is_floating_point<sample_type>::value,   "");
+    static_assert( std::is_floating_point<internal_type>::value, "");
 
 public:
     /* audio-rate controlled phasor */

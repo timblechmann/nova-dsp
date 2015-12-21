@@ -19,8 +19,7 @@
 #ifndef NOVA_DSP_UTILITIES_HPP
 #define NOVA_DSP_UTILITIES_HPP
 
-#include <boost/type_traits.hpp>
-#include <boost/static_assert.hpp>
+#include <type_traits>
 
 #include <cassert>
 #include <cmath>
@@ -38,7 +37,7 @@ namespace detail
 template <typename T>
 inline T decay_factor(T delay, T decay)
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    static_assert( std::is_floating_point<T>::value, "" );
     const T log_threshold = log(0.001); // db2amp(-60)
     return exp(log_threshold * delay / decay);
 }
@@ -47,7 +46,7 @@ inline T decay_factor(T delay, T decay)
 template <typename T>
 inline T decay_factor(T decay)
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    static_assert( std::is_floating_point<T>::value, "" );
     const T log_threshold = log(0.001); // db2amp(-60)
     return exp(log_threshold / decay);
 }
@@ -56,7 +55,7 @@ inline T decay_factor(T decay)
 template <typename T>
 inline T phasor_increment(T frequency, T samplerate)
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    static_assert( std::is_floating_point<T>::value, "" );
     return frequency / samplerate;
 }
 
@@ -66,7 +65,7 @@ inline T phasor_increment(T frequency, T samplerate)
 template <typename T>
 inline T amp2db(T amp)
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    static_assert( std::is_floating_point<T>::value, "" );
     if (unlikely(amp <= 0.f))
         return -120;
     else
@@ -77,14 +76,14 @@ inline T amp2db(T amp)
 template <typename T>
 inline T db2amp(T db)
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    static_assert( std::is_floating_point<T>::value, "" );
     return pow(T(10), db * T(0.1));
 }
 
 template <typename T>
 inline T rms2db(T amp)
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    static_assert( std::is_floating_point<T>::value, "" );
     if (unlikely(amp <= 0.f))
         return -120;
     else
@@ -94,7 +93,7 @@ inline T rms2db(T amp)
 template <typename T>
 inline T db2rms(T db)
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    static_assert( std::is_floating_point<T>::value, "" );
     return pow(T(10), db * T(0.05));
 }
 
@@ -102,7 +101,7 @@ inline T db2rms(T db)
 template <typename T>
 inline T midi2frequency(T midi)
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    static_assert( std::is_floating_point<T>::value, "" );
     const T expfactor = 0.0577622650467; // log(2**(1/12.))
     const T basefactor = 8.17579891564;  // 2 ** (-57/12.) * 440 / 2
 
@@ -113,7 +112,7 @@ inline T midi2frequency(T midi)
 template <typename T>
 inline T frequency2midi(T freq)
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<T>::value);
+    static_assert( std::is_floating_point<T>::value, "" );
     const T OneDiv440 = 1./440;
     if (unlikely(freq == 0.f))
         return T(-1500);

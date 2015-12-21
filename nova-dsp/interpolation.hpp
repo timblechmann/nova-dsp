@@ -19,8 +19,7 @@
 #ifndef NOVA_DSP_INTERPOLATION_HPP
 #define NOVA_DSP_INTERPOLATION_HPP
 
-#include <boost/type_traits.hpp>
-#include <boost/static_assert.hpp>
+#include <type_traits>
 
 #include <cmath>
 #include <cassert>
@@ -96,8 +95,8 @@ template <typename index_type,
           typename value_type>
 inline value_type linearinterp(index_type frac_pos, value_type x0, value_type x1)
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<value_type>::value);
-    BOOST_STATIC_ASSERT(boost::is_floating_point<index_type>::value);
+    static_assert(std::is_floating_point<value_type>::value, "");
+    static_assert(std::is_floating_point<index_type>::value, "");
     return x0 + frac_pos * (x1 - x0);
 }
 
@@ -120,8 +119,8 @@ template <typename index_type,
           typename value_type>
 inline value_type cubicinterp(index_type frac_pos, value_type xm1, value_type x0, value_type x1, value_type x2)
 {
-    BOOST_STATIC_ASSERT(boost::is_floating_point<index_type>::value);
-    BOOST_STATIC_ASSERT(boost::is_floating_point<value_type>::value);
+    static_assert(std::is_floating_point<index_type>::value, "");
+    static_assert(std::is_floating_point<value_type>::value, "");
     const value_type c = (x1 - xm1) * 0.5;
     const value_type v = x0 - x1;
     const value_type w = c + v;

@@ -47,7 +47,7 @@ class logistic_map:
 
     NOVA_CHAOS_PARAMETER_SETTER_CLIPPING(0, alpha, 0, 4)
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         internal_type x = state.get(0);
         const internal_type alpha = state.get_parameter(0);
@@ -80,7 +80,7 @@ class delayed_logistic_map:
 
     NOVA_CHAOS_PARAMETER_SETTER_CLIPPING(0, alpha, 0, 4)
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         internal_type x = state.get(0);
         internal_type x1 = state.get(1);
@@ -111,7 +111,7 @@ class bernoulli_map:
         generator_base(0.4)
     {}
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         const internal_type x = state.get(0);
         internal_type new_x = std::fmod(2*x, 1);
@@ -137,7 +137,7 @@ class tent_map:
         generator_base(0.4)
     {}
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         const internal_type x = state.get(0);
         internal_type new_x = internal_type(1) - 2 * std::abs(x);
@@ -162,11 +162,11 @@ class gauss_map:
         generator_base(0.4)
     {}
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         internal_type x = state.get(0);
 
-        if (unlikely (x == 0))
+        if (BOOST_UNLIKELY (x == 0))
             x = generate_pos_white_noise<internal_type>(0.001);
 
         internal_type new_x = std::fmod (1/x, 1);
@@ -200,7 +200,7 @@ class bungalow_tent_map:
 
     NOVA_CHAOS_PARAMETER_SETTER_CLIPPING(0, r, -0.5, 1)
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         internal_type x = state.get(0);
         internal_type r = state.get_parameter(0);
@@ -245,7 +245,7 @@ class circle_map:
     NOVA_CHAOS_PARAMETER_SETTER_CLIPPING(0, k, -0.5, 1)
     NOVA_CHAOS_PARAMETER_SETTER_CLIPPING(1, omega, -0.5, 1)
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         internal_type x = state.get(0);
 
@@ -289,7 +289,7 @@ class piecewise_linear_map:
     NOVA_CHAOS_PARAMETER_SETTER_SIMPLE(2, c)
     NOVA_CHAOS_PARAMETER_SETTER_SIMPLE(3, d)
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         const internal_type x = state.get(0);
 
@@ -330,7 +330,7 @@ class power_law_map:
     NOVA_CHAOS_PARAMETER_SETTER_SIMPLE(0, a)
     NOVA_CHAOS_PARAMETER_SETTER_SIMPLE(1, b)
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         const internal_type x = state.get(0);
 
@@ -368,7 +368,7 @@ class shift_map:
             generator_base::set_parameter(0, a);
     }
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         const internal_type x = state.get(0);
         const internal_type a = state.get_parameter(0);
@@ -398,7 +398,7 @@ class sine_map:
 
     NOVA_CHAOS_PARAMETER_SETTER_SIMPLE(0, a)
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         const internal_type x = state.get(0);
         const internal_type a = state.get_parameter(0);
@@ -433,14 +433,14 @@ class agnesi_map:
             generator_base::set_parameter(0, alpha);
     }
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         const internal_type x = state.get(0);
         const internal_type alpha = state.get_parameter(0);
 
         internal_type denominator = alpha + x*x;
 
-        if (unlikely(denominator == 0))
+        if (BOOST_UNLIKELY(denominator == 0))
             denominator = 1;
 
         const internal_type new_x = alpha / denominator;
@@ -465,7 +465,7 @@ class cusp_map:
         generator_base(0.4)
     {}
 
-    static always_inline void compute_sample(state_copy & state)
+    static BOOST_FORCEINLINE void compute_sample(state_copy & state)
     {
         const internal_type x = state.get(0);
 
